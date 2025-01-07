@@ -1,12 +1,13 @@
-import axios from 'axios';
+// import axios from 'axios';
 import './PokemonList.css';
-import React, { useEffect, useState } from 'react'
+// import React, { useEffect, useState } from 'react'
 import Pokemon from '../Pokemon/Pokemon';
 import usePokemonList from '../../Hooks/usePokemonList';
 
 function PokemonList() {
 
-    const [PokemonListState,setPokemonListState] = usePokemonList();
+    const DEFAULT_URL = 'https://pokeapi.co/api/v2/pokemon';
+    const [PokemonListState,setPokemonListState] = usePokemonList(DEFAULT_URL);
     
     return (
         <div className="pokemon-list-wrapper">
