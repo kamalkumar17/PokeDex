@@ -1,8 +1,11 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import DownloadPokemons from "../utils/DownloadPokemons";
+import { useParams } from "react-router-dom";
 
-function usePokemonDetails(id, DefaultUrl) {
+function usePokemonDetails(pokemonName) {
+
+    const { id } = useParams();
 
     const POKEMON_DETAILS_URL = 'https://pokeapi.co/api/v2/pokemon/';
     const [pokemon, setPokemon] = useState(null);
@@ -17,11 +20,9 @@ function usePokemonDetails(id, DefaultUrl) {
 
 
     async function DownloadGivenPokemon(id) {
-        const response = await axios.get(POKEMON_DETAILS_URL + id);
+        const response = await axios.get(POKEMON_DETAILS_URL + ((pokemonName) ? pokemonName : id));
         const pokemon = response.data;
-        console.log(id);
         setPokemon({
-            
             name: pokemon.name,
             height: pokemon.height,
             weight: pokemon.weight,
@@ -34,8 +35,12 @@ function usePokemonDetails(id, DefaultUrl) {
     }
 
     async function downloadPokemonAndRelated(id) {
+       try{
         const type = await DownloadGivenPokemon(id);
         await DownloadPokemons(PokemonListState, setPokemonListState, `https://pokeapi.co/api/v2/type/${type}`);
+       }catch{
+        console.log('No Pokemon Found')
+       }
     }
 
 
@@ -43,7 +48,7 @@ function usePokemonDetails(id, DefaultUrl) {
     useEffect(() => {
         downloadPokemonAndRelated(id);
         window.scrollTo({top:0,left:0,behavior:"smooth"})
-    }, [id]);
+    }, [id,pokemonName]);
 
     return [pokemon,PokemonListState];
 }

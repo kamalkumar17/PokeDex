@@ -14,7 +14,6 @@ async function DownloadPokemons(PokemonListState, setPokemonListState, DefaultUr
 
 
     const PokemonListData = await axios.all(PokemonPromise);
-    console.log(PokemonListData);
     const PokemonFinalList = PokemonListData.map((pokemonData) => {
         const pokemon = pokemonData.data;
         return {
